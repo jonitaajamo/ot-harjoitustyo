@@ -1,1 +1,94 @@
-commit ad696a0e4089d3402c27d88860c60e8418c48764                                                                         Author: Joni Taajamo <joni.taajamo@outlook.com>                                                                         Date:   Wed Mar 13 16:10:56 2019 +0200                                                                                                                                                                                                              uudelleennimeämistä ja poistettu file1                                                                                                                                                                                                       tiedostoja/file2             | 0                                                                                        tiedostoja/{file1 => file22} | 0                                                                                        2 files changed, 0 insertions(+), 0 deletions(-)                                                                                                                                                                                               commit 33e70b44961e7e0519d342bb42c1a49886c42db2                                                                         Author: Joni Taajamo <joni.taajamo@outlook.com>                                                                         Date:   Wed Mar 13 16:02:59 2019 +0200                                                                                                                                                                                                              lisätty tiedostoja                                                                                                                                                                                                                           tiedostoja/file1 | 0                                                                                                    tiedostoja/file2 | 0                                                                                                    tiedostoja/file3 | 0                                                                                                    3 files changed, 0 insertions(+), 0 deletions(-)                                                                                                                                                                                               commit 2ae6b1c2d4105bc38fc0715f1a93de3b0efdb12e                                                                         Author: Joni Taajamo <joni.taajamo@outlook.com>                                                                         Date:   Wed Mar 13 15:53:08 2019 +0200                                                                                                                                                                                                              lisäilyjä ja poistoja                                                                                                                                                                                                                        eka.txt    | 3 +--                                                                                                      kolmas.txt | 1 +                                                                                                        2 files changed, 2 insertions(+), 2 deletions(-)                                                                                                                                                                                               commit bdd6531bd1e43a206393812ffa05cbc76342c21f                                                                         Author: Joni Taajamo <joni.taajamo@outlook.com>                                                                         Date:   Wed Mar 13 15:51:01 2019 +0200                                                                                                                                                                                                              tiedosto uudelleennimetty                                                                                                                                                                                                                    tiedosto.txt => eka.txt | 0                                                                                             1 file changed, 0 insertions(+), 0 deletions(-)                                                                                                                                                                                                commit 4b49a9fddc72b3457a56d6b19084b24e06ad400b                                                                         Author: Joni Taajamo <joni.taajamo@outlook.com>                                                                         Date:   Wed Mar 13 15:45:33 2019 +0200                                                                                                                                                                                                              toinen poistettu                                                                                                                                                                                                                             toinen.txt | 0                                                                                                          1 file changed, 0 insertions(+), 0 deletions(-)                                                                                                                                                                                                commit f8efd2babdb4e2d3a539e59d9b2782f0a86f1aae                                                                         Author: Joni Taajamo <joni.taajamo@outlook.com>                                                                         Date:   Wed Mar 13 15:44:31 2019 +0200                                                                                                                                                                                                              tiedostosta poistettu vähän ipsumia                                                                                                                                                                                                          tiedosto.txt | 1 -                                                                                                      1 file changed, 1 deletion(-)                                                                                                                                                                                                                  commit 283b05811f7f101967e66f446f04fec317ce93b3                                                                         Author: Joni Taajamo <joni.taajamo@outlook.com>                                                                         Date:   Wed Mar 13 15:43:47 2019 +0200                                                                                                                                                                                                              tiedostoon lisätty ipsumia                                                                                                                                                                                                                   tiedosto.txt | 3 +++                                                                                                    1 file changed, 3 insertions(+)                                                                                                                                                                                                                commit efec864e66a43cba4263aea2ac18e8b14dd950ca                                                                         Author: Joni Taajamo <joni.taajamo@outlook.com>                                                                         Date:   Wed Mar 13 15:41:05 2019 +0200                                                                                                                                                                                                              kolmas lisätty                                                                                                                                                                                                                               kolmas.txt | 0                                                                                                          1 file changed, 0 insertions(+), 0 deletions(-)                                                                                                                                                                                                commit ae0e74a19251ddc9d3cf3ea54095207196d75ead                                                                         Author: Joni Taajamo <joni.taajamo@outlook.com>                                                                         Date:   Wed Mar 13 15:37:08 2019 +0200                                                                                                                                                                                                              muutos ja lisäys                                                                                                                                                                                                                             tiedosto.txt | 1 +                                                                                                      toinen.txt   | 0                                                                                                        2 files changed, 1 insertion(+)                                                                                                                                                                                                                commit 60ec5b2c48434c76f845d743735336d2902b1098                                                                         Author: Joni Taajamo <joni.taajamo@outlook.com>                                                                         Date:   Wed Mar 13 15:33:44 2019 +0200                                                                                                                                                                                                              tiedosto.txt luotu                                                                                                                                                                                                                           tiedosto.txt | 0                                                                                                        1 file changed, 0 insertions(+), 0 deletions(-)
+commit ad696a0e4089d3402c27d88860c60e8418c48764
+Author: Joni Taajamo <joni.taajamo@outlook.com>
+Date:   Wed Mar 13 16:10:56 2019 +0200
+
+    uudelleennimeämistä ja poistettu file1
+
+ tiedostoja/file2             | 0
+ tiedostoja/{file1 => file22} | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 33e70b44961e7e0519d342bb42c1a49886c42db2
+Author: Joni Taajamo <joni.taajamo@outlook.com>
+Date:   Wed Mar 13 16:02:59 2019 +0200
+
+    lisätty tiedostoja
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 2ae6b1c2d4105bc38fc0715f1a93de3b0efdb12e
+Author: Joni Taajamo <joni.taajamo@outlook.com>
+Date:   Wed Mar 13 15:53:08 2019 +0200
+
+    lisäilyjä ja poistoja
+
+ eka.txt    | 3 +--
+ kolmas.txt | 1 +
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit bdd6531bd1e43a206393812ffa05cbc76342c21f
+Author: Joni Taajamo <joni.taajamo@outlook.com>
+Date:   Wed Mar 13 15:51:01 2019 +0200
+
+    tiedosto uudelleennimetty
+
+ tiedosto.txt => eka.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 4b49a9fddc72b3457a56d6b19084b24e06ad400b
+Author: Joni Taajamo <joni.taajamo@outlook.com>
+Date:   Wed Mar 13 15:45:33 2019 +0200
+
+    toinen poistettu
+
+ toinen.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit f8efd2babdb4e2d3a539e59d9b2782f0a86f1aae
+Author: Joni Taajamo <joni.taajamo@outlook.com>
+Date:   Wed Mar 13 15:44:31 2019 +0200
+
+    tiedostosta poistettu vähän ipsumia
+
+ tiedosto.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 283b05811f7f101967e66f446f04fec317ce93b3
+Author: Joni Taajamo <joni.taajamo@outlook.com>
+Date:   Wed Mar 13 15:43:47 2019 +0200
+
+    tiedostoon lisätty ipsumia
+
+ tiedosto.txt | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit efec864e66a43cba4263aea2ac18e8b14dd950ca
+Author: Joni Taajamo <joni.taajamo@outlook.com>
+Date:   Wed Mar 13 15:41:05 2019 +0200
+
+    kolmas lisätty
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit ae0e74a19251ddc9d3cf3ea54095207196d75ead
+Author: Joni Taajamo <joni.taajamo@outlook.com>
+Date:   Wed Mar 13 15:37:08 2019 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit 60ec5b2c48434c76f845d743735336d2902b1098
+Author: Joni Taajamo <joni.taajamo@outlook.com>
+Date:   Wed Mar 13 15:33:44 2019 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
