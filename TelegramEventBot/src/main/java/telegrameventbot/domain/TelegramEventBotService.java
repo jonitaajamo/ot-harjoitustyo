@@ -14,10 +14,11 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  * @author jonitaajamo
  */
 public class TelegramEventBotService {
+
     TelegramBotsApi telegramBotsApi;
     TelegramEventBot telegramEventBot;
-    
-    public boolean registerBot(){
+
+    public boolean registerBot() {
         ApiContextInitializer.init();
         this.telegramBotsApi = new TelegramBotsApi();
         this.telegramEventBot = new TelegramEventBot();
@@ -29,7 +30,7 @@ public class TelegramEventBotService {
             return false;
         }
     }
-    
+
     public void stopBot() {
         //TODO
         System.out.println("Haha, can't be stopped");

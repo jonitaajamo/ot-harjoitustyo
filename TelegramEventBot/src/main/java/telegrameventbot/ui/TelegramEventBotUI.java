@@ -8,6 +8,8 @@ package telegrameventbot.ui;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import telegrameventbot.domain.TelegramEventBotService;
 
@@ -23,25 +25,19 @@ public class TelegramEventBotUI extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         TelegramEventBotService telegrameventbot = new TelegramEventBotService();
+        telegrameventbot.registerBot();
         
         stage.setTitle("Telegram Event Bot");
         
-        Button launchButton = new Button("Launch");
+        Label botStatus = new Label("Bot status: ");
         
-        Scene scene = new Scene(launchButton, 200, 100);
+        FlowPane components = new FlowPane();
+        components.getChildren().add(botStatus);
+        
+        
+        Scene scene = new Scene(components, 200, 100);
         stage.setScene(scene);
         stage.show();
-        
-        
-        launchButton.setOnAction(event -> {
-            if(launchButton.getText().equals("Launch")) {
-                System.out.println("Launched successfully");
-                telegrameventbot.registerBot();
-                launchButton.setText("Turn off");
-            }else{
-                telegrameventbot.stopBot();
-            }
-        });
         
         
     }
