@@ -13,15 +13,17 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
 /**
  *
  * @author jonitaajamo
  */
 public class TelegramEventBotTest {
-    TelegramEventBot eventBot;
+    private TelegramEventBot eventBot;
     
     public TelegramEventBotTest() {
+        
     }
     
     @BeforeClass
@@ -40,6 +42,11 @@ public class TelegramEventBotTest {
     @Test
     public void botReturnsCorrectUsername() {
         assertEquals("PrimitiveEventBot", eventBot.getBotUsername());
+    }
+    
+    @Test
+    public void readCommandReturnsErrorText() {
+        assertEquals("Thats not a command", eventBot.readCommand("asdf", 1));
     }
     
     @After

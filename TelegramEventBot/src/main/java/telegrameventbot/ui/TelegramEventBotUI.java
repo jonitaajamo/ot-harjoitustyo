@@ -11,8 +11,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
-import telegrameventbot.domain.TelegramEventBotService;
-
+import org.telegram.telegrambots.ApiContextInitializer;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import telegrameventbot.domain.TelegramEventBot;
 /**
  *
  * @author jonitaajamo
@@ -24,12 +26,20 @@ public class TelegramEventBotUI extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        TelegramEventBotService telegrameventbot = new TelegramEventBotService();
-        telegrameventbot.registerBot();
+        ApiContextInitializer.init();
+        
+        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
+        TelegramEventBot telegramEventBot = new TelegramEventBot();
+        try {
+            telegramBotsApi.registerBot(telegramEventBot);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
         
         stage.setTitle("Telegram Event Bot");
         
-        Label botStatus = new Label("Bot status: ");
+        Label botStatus = new Label("Bot status: online");
+        
         
         FlowPane components = new FlowPane();
         components.getChildren().add(botStatus);

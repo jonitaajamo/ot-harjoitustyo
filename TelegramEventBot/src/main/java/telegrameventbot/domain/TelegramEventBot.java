@@ -16,7 +16,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  * @author jonitaajamo
  */
 public class TelegramEventBot extends TelegramLongPollingBot {
-
+    
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
@@ -27,7 +27,7 @@ public class TelegramEventBot extends TelegramLongPollingBot {
             readCommand(messageText, chatId);
         }
     }
-
+    
     @Override
     public String getBotUsername() {
         return "PrimitiveEventBot";
@@ -38,27 +38,34 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         return "";
     }
 
-    public void sendMessage(String text, long chatId) {
+    public Message sendMessage(String text, long chatId) {
         SendMessage message = new SendMessage()
                 .setChatId(chatId)
                 .setText(text);
         try {
-            execute(message);
+            return execute(message);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+        return null;
     }
     
-    public void readCommand(String messageText, long chatId) {
+    public String readCommand(String messageText, long chatId) {
         String command = messageText.split(" ")[0];
+        String answer = "Something went terribly wrong.";
 
             if (command.startsWith("/")) {
                 switch (command) {
                     case "/addevent":
-                        sendMessage("Tried to add event, but failed", chatId);
+                        answer = "Tried to add event, but failed";
+                    case "/attend":
+                        answer = "Tried to attend event, but failed";
                 }
             } else {
-                sendMessage("Thats not a command", chatId);
+                answer = "Thats not a command";
             }
+        
+        sendMessage(answer, chatId);
+        return answer;
     }
 }
