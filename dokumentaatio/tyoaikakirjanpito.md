@@ -6,4 +6,7 @@
 |25.3.|2|Lisää tutustumista apin ja javan yhteistoimintaan|
 |1.4.|2|Botin luonti telegramissa ja projektin pohjan luonti|
 |2.4.|4|Ensimmäinen yhteys telegramin apiin ja ensimmäiset luokat luotu|
-|YHT|10||
+|7.4.|2|Telegram komentojen tunnistusta|
+|8.4.|4|Testejä botin luokille ja refaktorointia|
+|9.4.|1|Pakkauskaavio|
+|YHT|17||
