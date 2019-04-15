@@ -3,6 +3,7 @@
 ## Telegram tapahtumakalenteri-botti
 
 * [vaatimusmäärittely](https://github.com/jonitaajamo/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
+* [arkkitehtuuri](https://github.com/jonitaajamo/ot-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md)
 * [työaikakirjanpito](https://github.com/jonitaajamo/ot-harjoitustyo/blob/master/dokumentaatio/tyoaikakirjanpito.md)
 
 ## Komentorivitoiminnot
