@@ -15,7 +15,7 @@ public class TelegramEventBotDao {
 
     public TelegramEventBotDao(String databaseName) throws SQLException {
         this.database = databaseName;
-        // TODO: initDatabase();
+        initDatabase();
     }
     
     private Connection connect() throws SQLException {
@@ -38,7 +38,8 @@ public class TelegramEventBotDao {
                 "CREATE TABLE IF NOT EXISTS Event (\n"
                 + " id integer PRIMARY KEY,\n"
                 + " chatId integer NOT NULL,\n"
-                + " name varchar(50) NOT NULL);"
+                + " name varchar(50) NOT NULL, \n"
+                + " date Date NOT NULL);"
         );
         createEventTable.execute();
         createEventTable.close();
@@ -53,6 +54,23 @@ public class TelegramEventBotDao {
         createRegistrationTable.execute();
         createRegistrationTable.close();
 
+        connection.close();
+    }
+    
+    public void insertNewEvent(long chatId, String name, String date) throws SQLException {
+        Connection connection = connect();
+        PreparedStatement newEvent = connection.prepareStatement(
+                "INSERT INTO Event(\n"
+                + " chatId, name, date)\n"
+                + " VALUES (?, ?, ?);"
+        );
+        
+        newEvent.setLong(1, chatId);
+        newEvent.setString(2, name);
+        newEvent.setString(3, date);
+        
+        newEvent.executeUpdate();
+        newEvent.close();
         connection.close();
     }
 }

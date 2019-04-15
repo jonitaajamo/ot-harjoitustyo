@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -42,11 +43,8 @@ public class TelegramEventBotUI extends Application {
 
             prop.load(input);
 
-            
             apiKey = prop.getProperty("apiKey");
             username = prop.getProperty("username");
-            System.out.println("apikey: " + apiKey);
-            System.out.println("username: " + username);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -65,13 +63,14 @@ public class TelegramEventBotUI extends Application {
         stage.setTitle("Telegram Event Bot");
         
         Label botStatus = new Label("Bot status: online");
-        Label usernameText = new Label("username: " + username);
-        Label apiKeyText = new Label("Your apikey: " + apiKey);
+        GridPane.setConstraints(botStatus, 0, 1);
+        Label usernameText = new Label("Username: " + username);
+        GridPane.setConstraints(usernameText, 0, 2);
+        Label apiKeyText = new Label("Apikey: " + apiKey);
+        GridPane.setConstraints(apiKeyText, 0, 3);
         
-        FlowPane components = new FlowPane();
-        components.getChildren().add(botStatus);
-        components.getChildren().add(usernameText);
-        components.getChildren().add(apiKeyText);
+        GridPane components = new GridPane();
+        components.getChildren().addAll(botStatus, usernameText, apiKeyText);
         
         Scene scene = new Scene(components, 200, 100);
         stage.setScene(scene);

@@ -5,11 +5,13 @@
  */
 package telegrameventbot.domain;
 
+import java.sql.SQLException;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import telegrameventbot.dao.TelegramEventBotDao;
 
 /**
  *
@@ -18,10 +20,12 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class TelegramEventBot extends TelegramLongPollingBot {
     private String apiKey;
     private String userName;
+    private TelegramEventBotDao db;
     
-    public TelegramEventBot(String apiKey, String username) {
+    public TelegramEventBot(String apiKey, String username) throws SQLException {
         this.apiKey = apiKey;
         this.userName = username;
+        this.db = new TelegramEventBotDao("event.db");
     }
     
     @Override
@@ -58,15 +62,16 @@ public class TelegramEventBot extends TelegramLongPollingBot {
     }
 
     public String readCommand(String messageText, long chatId) {
-        String command = messageText.split(" ")[0];
-        String answer = "Something went terribly wrong.";
-
-        if (command.startsWith("/")) {
-            switch (command) {
+        String[] command = messageText.split(" ");
+        String answer = "Something went terribly wrong. Contact my creator.";
+        if (command[0].startsWith("/")) {
+            switch (command[0]) {
                 case "/addevent":
-                    answer = "Tried to add event, but failed";
+                    answer = addEvent(command, chatId);
+                    break;
                 case "/attend":
                     answer = "Tried to attend event, but failed";
+                    break;
             }
         } else {
             answer = "Thats not a command";
@@ -76,7 +81,23 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         return answer;
     }
     
-    public void addEvent(String event, long chatId) {
-        
+    public String addEvent(String[] command, long chatId) {
+        if(command.length == 3 && checkDateFormat(command[2])) {
+            try{
+                db.insertNewEvent(chatId, command[1], command[2]);
+                return command[1] + " saved succesfully for " + command[2] + ". You can now use /attend <eventname>";
+            }catch(SQLException e){
+                e.printStackTrace();
+                return "Something went wrong, event not saved.";
+            }
+        }
+        return "Can't add event. Command must be in format \"/addevent <name> <dd.mm.yyyy>\"";
+    }
+    
+    public boolean checkDateFormat(String date) {
+        if(date.matches("^([0-2][0-9]||3[0-1]).(0[0-9]||1[0-2]).([0-9][0-9])?[0-9][0-9]$")) {
+            return true;
+        }
+        return false;
     }
 }

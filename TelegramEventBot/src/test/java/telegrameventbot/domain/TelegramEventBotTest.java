@@ -6,6 +6,7 @@ package telegrameventbot.domain;
  * and open the template in the editor.
  */
 
+import java.sql.SQLException;
 import telegrameventbot.domain.TelegramEventBot;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -35,18 +36,33 @@ public class TelegramEventBotTest {
     }
     
     @Before
-    public void setUp() {
-        this.eventBot = new TelegramEventBot();
+    public void setUp() throws SQLException {
+        this.eventBot = new TelegramEventBot("BotKey", "Bot");
     }
     
     @Test
     public void botReturnsCorrectUsername() {
-        assertEquals("PrimitiveEventBot", eventBot.getBotUsername());
+        assertEquals("Bot", eventBot.getBotUsername());
+    }
+    
+    @Test
+    public void botReturnsCorrectApiKey() {
+        assertEquals("BotKey", eventBot.getBotToken());
     }
     
     @Test
     public void readCommandReturnsErrorText() {
         assertEquals("Thats not a command", eventBot.readCommand("asdf", 1));
+    }
+    
+    @Test
+    public void checkDateFormatReturnsTrueCorrectly() {
+        assertTrue(eventBot.checkDateFormat("12.01.2019"));
+    }
+    
+    @Test
+    public void checkDateFormatReturnsFalseCorrectly() {
+        assertFalse(eventBot.checkDateFormat("12.01.2"));
     }
     
     @After
