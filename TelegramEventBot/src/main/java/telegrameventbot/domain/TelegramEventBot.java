@@ -16,7 +16,14 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  * @author jonitaajamo
  */
 public class TelegramEventBot extends TelegramLongPollingBot {
-
+    private String apiKey;
+    private String userName;
+    
+    public TelegramEventBot(String apiKey, String username) {
+        this.apiKey = apiKey;
+        this.userName = username;
+    }
+    
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
@@ -30,12 +37,12 @@ public class TelegramEventBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "PrimitiveEventBot";
+        return userName;
     }
 
     @Override
     public String getBotToken() {
-        return "";
+        return apiKey;
     }
 
     public Message sendMessage(String text, long chatId) {
@@ -67,5 +74,9 @@ public class TelegramEventBot extends TelegramLongPollingBot {
 
         sendMessage(answer, chatId);
         return answer;
+    }
+    
+    public void addEvent(String event, long chatId) {
+        
     }
 }
