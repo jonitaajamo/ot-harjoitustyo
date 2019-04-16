@@ -9,4 +9,6 @@
 |7.4.|2|Telegram komentojen tunnistusta|
 |8.4.|4|Testejä botin luokille ja refaktorointia|
 |9.4.|1|Pakkauskaavio|
-|YHT|17||
+|15.4.|4|Tietokannan käyttöönotto, tapahtuman lisäys toimii|
+|16.4.|5|Lisää tietokantatoiminnallisuuksia, tapahtumiin osallistuminen toimii|
+|YHT|25||
