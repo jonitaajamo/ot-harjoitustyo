@@ -5,6 +5,7 @@
 * [vaatimusmäärittely](https://github.com/jonitaajamo/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
 * [arkkitehtuuri](https://github.com/jonitaajamo/ot-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md)
 * [työaikakirjanpito](https://github.com/jonitaajamo/ot-harjoitustyo/blob/master/dokumentaatio/tyoaikakirjanpito.md)
+* [release viikko5](https://github.com/jonitaajamo/ot-harjoitustyo/releases/tag/viikko5)
 
 ## Komentorivitoiminnot
 
