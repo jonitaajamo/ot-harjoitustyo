@@ -23,20 +23,22 @@ import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import telegrameventbot.domain.TelegramEventBot;
+
 /**
  *
  * @author jonitaajamo
  */
 public class TelegramEventBotUI extends Application {
+
     public static void main(String[] args) {
         launch(args);
     }
-    
+
     @Override
     public void start(Stage stage) throws Exception {
         String apiKey = "";
         String username = "";
-        
+
         try (InputStream input = new FileInputStream("config.properties")) {
 
             Properties prop = new Properties();
@@ -48,9 +50,9 @@ public class TelegramEventBotUI extends Application {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        
+
         ApiContextInitializer.init();
-        
+
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         TelegramEventBot telegramEventBot = new TelegramEventBot(apiKey, username);
         try {
@@ -58,24 +60,22 @@ public class TelegramEventBotUI extends Application {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-        
-        
+
         stage.setTitle("Telegram Event Bot");
-        
+
         Label botStatus = new Label("Bot status: online");
         GridPane.setConstraints(botStatus, 0, 1);
         Label usernameText = new Label("Username: " + username);
         GridPane.setConstraints(usernameText, 0, 2);
         Label apiKeyText = new Label("Apikey: " + apiKey);
         GridPane.setConstraints(apiKeyText, 0, 3);
-        
+
         GridPane components = new GridPane();
         components.getChildren().addAll(botStatus, usernameText, apiKeyText);
-        
+
         Scene scene = new Scene(components, 200, 100);
         stage.setScene(scene);
         stage.show();
-        
-        
+
     }
 }
