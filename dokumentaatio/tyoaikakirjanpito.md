@@ -11,4 +11,4 @@
 |9.4.|1|Pakkauskaavio|
 |15.4.|4|Tietokannan käyttöönotto, tapahtuman lisäys toimii|
 |16.4.|5|Lisää tietokantatoiminnallisuuksia, tapahtumiin osallistuminen toimii|
-|YHT|25||
+|YHT|26||
