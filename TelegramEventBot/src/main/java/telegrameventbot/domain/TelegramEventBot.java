@@ -6,6 +6,8 @@
 package telegrameventbot.domain;
 
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -32,10 +34,9 @@ public class TelegramEventBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             Message message = update.getMessage();
-            String messageText = message.getText();
             long chatId = update.getMessage().getChatId();
 
-            readCommand(messageText, chatId);
+            readCommand(message, chatId);
         }
     }
 
@@ -61,16 +62,17 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         return null;
     }
 
-    public String readCommand(String messageText, long chatId) {
-        String[] command = messageText.split(" ");
+    public String readCommand(Message message, long chatId) {
+        String[] command = message.getText().split(" ");
         String answer = "Something went terribly wrong. Contact my creator.";
+        
         if (command[0].startsWith("/")) {
             switch (command[0]) {
                 case "/addevent":
                     answer = addEvent(command, chatId);
                     break;
                 case "/attend":
-                    answer = "Tried to attend event, but failed";
+                    answer = attendEvent(command, chatId);
                     break;
             }
         } else {
@@ -83,9 +85,13 @@ public class TelegramEventBot extends TelegramLongPollingBot {
     
     public String addEvent(String[] command, long chatId) {
         if(command.length == 3 && checkDateFormat(command[2])) {
+            Event newEvent = new Event(chatId, command[1], command[2]);
             try{
-                db.insertNewEvent(chatId, command[1], command[2]);
-                return command[1] + " saved succesfully for " + command[2] + ". You can now use /attend <eventname>";
+                boolean addedSuccesfully = db.insertNewEvent(newEvent);
+                if(!addedSuccesfully) {
+                    return "Event with the name " + newEvent.getName() + " is already added, try a different one.";
+                }
+                return command[1] + " saved succesfully for " + command[2] + ". You can now use /attend <eventname> <username>";
             }catch(SQLException e){
                 e.printStackTrace();
                 return "Something went wrong, event not saved.";
@@ -99,5 +105,22 @@ public class TelegramEventBot extends TelegramLongPollingBot {
             return true;
         }
         return false;
+    }
+    
+    public String attendEvent(String[] command, long chatId) {
+        if(command.length == 3) {
+            try {
+                Event eventToAttend = db.getOneEventByNameAndChaId(command[1], chatId);
+                if(db.isAttendingEvent(command[2], eventToAttend)){
+                    return command[2] + " is already attending " + eventToAttend.getName();
+                }
+                if(db.attendEvent(command[1], eventToAttend)) {
+                    return command[2] + " is now attending " + eventToAttend.getName() + " on " + eventToAttend.getDate();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(TelegramEventBot.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+        }
+        return "Can't attend event. Command must be in format \"/attend <eventname> <username>";
     }
 }

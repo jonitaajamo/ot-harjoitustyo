@@ -51,11 +51,6 @@ public class TelegramEventBotTest {
     }
     
     @Test
-    public void readCommandReturnsErrorText() {
-        assertEquals("Thats not a command", eventBot.readCommand("asdf", 1));
-    }
-    
-    @Test
     public void checkDateFormatReturnsTrueCorrectly() {
         assertTrue(eventBot.checkDateFormat("12.01.2019"));
     }
