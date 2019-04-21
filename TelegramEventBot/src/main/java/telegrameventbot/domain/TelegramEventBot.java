@@ -67,7 +67,7 @@ public class TelegramEventBot extends TelegramLongPollingBot {
 
     public String readCommand(Message message, long chatId) {
         String[] command = message.getText().split(" ");
-        String answer = "Something went terribly wrong. Contact my creator.";
+        String answer = "There's something wrong with your command. Check for typos.";
 
         if (command[0].startsWith("/")) {
             switch (command[0]) {
@@ -79,9 +79,16 @@ public class TelegramEventBot extends TelegramLongPollingBot {
                     break;
                 case "/events":
                     answer = getEvents(command, chatId);
+                    break;
+                case "/attending":
+                    answer = getEventAttendees(command, chatId);
+                    break;
+                case "/commands":
+                    answer = getCommands();
+                    break;
             }
         } else {
-            answer = "Thats not a command";
+            answer = "That's not a command";
         }
 
         sendMessage(answer, chatId);
@@ -115,38 +122,70 @@ public class TelegramEventBot extends TelegramLongPollingBot {
     public String attendEvent(String[] command, long chatId) {
         if (command.length == 3) {
             try {
-                Event eventToAttend = db.getOneEventByNameAndChaId(command[1], chatId);
+                Event eventToAttend = db.getOneEventByNameAndChatId(command[1], chatId);
                 if (db.isAttendingEvent(command[2], eventToAttend)) {
                     return command[2] + " is already attending " + eventToAttend.getName();
                 }
-                if (db.attendEvent(command[1], eventToAttend)) {
+                if (db.attendEvent(command[2], eventToAttend)) {
                     return command[2] + " is now attending " + eventToAttend.getName() + " on " + eventToAttend.getDate();
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(TelegramEventBot.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return "Can't attend event. Command must be in format \"/attend <eventname> <username>";
+        return "Can't attend event. Command must be in format \"/attend <eventname> <username>\"";
     }
-    
+
     public String getEvents(String[] command, long chatId) {
         if (command.length == 1) {
             try {
                 List<Event> events = db.getAllEvents();
                 String message = "";
-                for(Event event : events) {
+                for (Event event : events) {
                     message += event.toString() + "\n";
                 }
                 if (message.length() > 0) {
                     return message;
                 }
                 return "No any events added. Add a new one using command \"/addevent <name> <dd.mm.yyyy>\"";
-                
+
             } catch (SQLException ex) {
                 Logger.getLogger(TelegramEventBot.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         return "Can't get events. Command must only contain text \"events\".";
+    }
+
+    public String getEventAttendees(String[] command, long chatId) {
+        if (command.length == 2) {
+            try {
+                Event event = db.getOneEventByNameAndChatId(command[1], chatId);
+
+                if (event == null) {
+                    return "Event doesn't exists.";
+                }
+                List<String> attendees = db.getEventAttendees(event);
+                String message = "";
+                for (String attendee : attendees) {
+                    message += attendee + "\n";
+                }
+                if (message.length() > 0) {
+                    message += "are attending " + event.getName() + " on " + event.getDate();
+                    return message;
+                }
+                return "No one isn't attending this event. Attend it with \"/attend <eventname> <username>\"";
+            } catch (SQLException ex) {
+                Logger.getLogger(TelegramEventBot.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return "Can't get attendees. Command must be in format \"/attending <eventname>\".";
+    }
+
+    public String getCommands() {
+        return "/addevent\n"
+                + "/attend\n"
+                + "/events\n"
+                + "/attending";
     }
 }

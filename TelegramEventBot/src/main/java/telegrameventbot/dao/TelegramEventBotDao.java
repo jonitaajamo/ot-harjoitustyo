@@ -96,7 +96,7 @@ public class TelegramEventBotDao {
         ResultSet resultSet = getEventsQuery.executeQuery();
 
         while (resultSet.next()) {
-            Event event = new Event(resultSet.getLong("chatId"), resultSet.getString("name"), resultSet.getString("date"));
+            Event event = new Event(resultSet.getLong("chatId"), resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("date"));
             events.add(event);
         }
 
@@ -126,14 +126,14 @@ public class TelegramEventBotDao {
                 "SELECT Registration.name FROM Registration"
                 + " LEFT JOIN Event"
                 + " ON Registration.event_id = Event.id"
-                + " WHERE chatId = ?");
+                + " WHERE Event.id = ?");
 
-        getRegistrationsQuery.setLong(1, event.getChatId());
+        getRegistrationsQuery.setInt(1, event.getId());
 
         ResultSet resultSet = getRegistrationsQuery.executeQuery();
 
         while (resultSet.next()) {
-            attendees.add(resultSet.getString("name").toLowerCase());
+            attendees.add(resultSet.getString("name"));
         }
 
         getRegistrationsQuery.close();
@@ -143,7 +143,7 @@ public class TelegramEventBotDao {
         return attendees;
     }
 
-    public Event getOneEventByNameAndChaId(String name, long chatId) throws SQLException {
+    public Event getOneEventByNameAndChatId(String name, long chatId) throws SQLException {
         Connection connection = connect();
 
         PreparedStatement getEventQuery = connection.prepareStatement("SELECT * FROM Event"
@@ -153,7 +153,7 @@ public class TelegramEventBotDao {
 
         ResultSet resultSet = getEventQuery.executeQuery();
 
-        Event event = new Event(resultSet.getLong("chatId"), resultSet.getString("name"), resultSet.getString("date"));
+        Event event = new Event(resultSet.getLong("chatId"), resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("date"));
 
         getEventQuery.close();
         resultSet.close();
@@ -180,7 +180,7 @@ public class TelegramEventBotDao {
                 + "(event_id, name) VALUES "
                 + " (?,?)");
 
-        attendEventQuery.setLong(1, event.getChatId());
+        attendEventQuery.setLong(1, event.getId());
         attendEventQuery.setString(2, name);
 
         attendEventQuery.executeUpdate();

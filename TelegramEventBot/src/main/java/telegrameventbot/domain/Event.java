@@ -10,10 +10,19 @@ package telegrameventbot.domain;
  * @author jonitaajamo
  */
 public class Event {
+
+    public int id;
     private long chatId;
     private String name;
     private String date;
-    
+
+    public Event(long chatId, int id, String name, String date) {
+        this.id = id;
+        this.chatId = chatId;
+        this.name = name;
+        this.date = date;
+    }
+
     public Event(long chatId, String name, String date) {
         this.chatId = chatId;
         this.name = name;
@@ -44,10 +53,17 @@ public class Event {
         this.date = date;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return this.name + ": " + this.date;
     }
-    
-    
+
 }
