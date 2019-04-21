@@ -6,6 +6,8 @@
 package telegrameventbot.domain;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -75,6 +77,8 @@ public class TelegramEventBot extends TelegramLongPollingBot {
                 case "/attend":
                     answer = attendEvent(command, chatId);
                     break;
+                case "/events":
+                    answer = getEvents(command, chatId);
             }
         } else {
             answer = "Thats not a command";
@@ -123,5 +127,26 @@ public class TelegramEventBot extends TelegramLongPollingBot {
             }
         }
         return "Can't attend event. Command must be in format \"/attend <eventname> <username>";
+    }
+    
+    public String getEvents(String[] command, long chatId) {
+        if (command.length == 1) {
+            try {
+                List<Event> events = db.getAllEvents();
+                String message = "";
+                for(Event event : events) {
+                    message += event.toString() + "\n";
+                }
+                if (message.length() > 0) {
+                    return message;
+                }
+                return "No any events added. Add a new one using command \"/addevent <name> <dd.mm.yyyy>\"";
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(TelegramEventBot.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        return "Can't get events. Command must only contain text \"events\".";
     }
 }

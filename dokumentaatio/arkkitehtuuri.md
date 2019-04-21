@@ -5,3 +5,6 @@
 
 ## Sekvenssikaavio tapahtuman lisäämisestä
 ![sekvenssikaavio](https://github.com/jonitaajamo/ot-harjoitustyo/tree/master/dokumentaatio/kuvat/sekvenssikaavio.png)
+
+## Tietokantakaavio
+![tietokantakaavio](https://github.com/jonitaajamo/ot-harjoitustyo/tree/master/dokumentaatio/kuvat/tietokantakaavio.jpg)
