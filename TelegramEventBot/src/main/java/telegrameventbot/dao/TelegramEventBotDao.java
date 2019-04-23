@@ -86,13 +86,14 @@ public class TelegramEventBotDao {
         return true;
     }
 
-    public List<Event> getAllEvents() throws SQLException {
+    public List<Event> getAllEvents(long chatid) throws SQLException {
         List<Event> events = new ArrayList<>();
 
         Connection connection = connect();
 
-        PreparedStatement getEventsQuery = connection.prepareStatement("SELECT * FROM Event;");
-
+        PreparedStatement getEventsQuery = connection.prepareStatement("SELECT * FROM Event WHERE chatid = ?;");
+        
+        getEventsQuery.setLong(1, chatid);
         ResultSet resultSet = getEventsQuery.executeQuery();
 
         while (resultSet.next()) {
@@ -108,7 +109,7 @@ public class TelegramEventBotDao {
     }
 
     public boolean eventIsInDb(Event event) throws SQLException {
-        List<Event> eventsInDb = getAllEvents();
+        List<Event> eventsInDb = getAllEvents(event.getChatId());
         for (Event e : eventsInDb) {
             if (e.getName().toLowerCase().equals(event.getName().toLowerCase()) && e.getChatId() == event.getChatId()) {
                 return true;

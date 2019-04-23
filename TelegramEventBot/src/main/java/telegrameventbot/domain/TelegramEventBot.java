@@ -26,20 +26,28 @@ public class TelegramEventBot extends TelegramLongPollingBot {
     private String apiKey;
     private String userName;
     private TelegramEventBotDao db;
+    private long lastChatId;
 
     public TelegramEventBot(String apiKey, String username) throws SQLException {
         this.apiKey = apiKey;
         this.userName = username;
         this.db = new TelegramEventBotDao("event.db");
     }
-
+    
+   /**
+    * Method reads update from Telegram API and takes Update object as parameter, 
+    * not to be called manually.
+    * 
+    * @param    update  Update received from Telegram API
+    * 
+    */
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             Message message = update.getMessage();
-            long chatId = update.getMessage().getChatId();
+            this.lastChatId = update.getMessage().getChatId();
 
-            readCommand(message, chatId);
+            readCommand(message);
         }
     }
 
@@ -53,9 +61,16 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         return apiKey;
     }
 
-    public Message sendMessage(String text, long chatId) {
+   /** 
+    * Method sends messages to Telegram api.
+    * 
+    * @param text   Text for message to be sent.
+    * @return Message object which will be sent. 
+    */
+    
+    public Message sendMessage(String text) {
         SendMessage message = new SendMessage()
-                .setChatId(chatId)
+                .setChatId(lastChatId)
                 .setText(text);
         try {
             return execute(message);
@@ -64,24 +79,29 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         }
         return null;
     }
-
-    public String readCommand(Message message, long chatId) {
+    
+   /** Reads first word from Message objects message string.
+    * 
+    * @param message    Message object which will be parsed by the method.
+    * @return Answer String
+    */
+    public String readCommand(Message message) {
         String[] command = message.getText().split(" ");
         String answer = "There's something wrong with your command. Check for typos.";
 
         if (command[0].startsWith("/")) {
             switch (command[0]) {
                 case "/addevent":
-                    answer = addEvent(command, chatId);
+                    answer = addEvent(command);
                     break;
                 case "/attend":
-                    answer = attendEvent(command, chatId);
+                    answer = attendEvent(command);
                     break;
                 case "/events":
-                    answer = getEvents(command, chatId);
+                    answer = getEvents(command);
                     break;
                 case "/attending":
-                    answer = getEventAttendees(command, chatId);
+                    answer = getEventAttendees(command);
                     break;
                 case "/commands":
                     answer = getCommands();
@@ -91,13 +111,18 @@ public class TelegramEventBot extends TelegramLongPollingBot {
             answer = "That's not a command";
         }
 
-        sendMessage(answer, chatId);
+        sendMessage(answer);
         return answer;
     }
 
-    public String addEvent(String[] command, long chatId) {
+   /**Method reads and validates commands and calls DAO to save new event to database
+    * 
+    * @param command    Command array
+    * @return String about the status of saving the event.
+    */
+    public String addEvent(String[] command) {
         if (command.length == 3 && checkDateFormat(command[2])) {
-            Event newEvent = new Event(chatId, command[1], command[2]);
+            Event newEvent = new Event(lastChatId, command[1], command[2]);
             try {
                 boolean addedSuccesfully = db.insertNewEvent(newEvent);
                 if (!addedSuccesfully) {
@@ -111,7 +136,12 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         }
         return "Can't add event. Command must be in format \"/addevent <name> <dd.mm.yyyy>\"";
     }
-
+    
+   /** Checks if date is in format dd.mm.yyyy when saved as string.
+    * 
+    * @param date   Date as string 
+    * @return boolean
+    */
     public boolean checkDateFormat(String date) {
         if (date.matches("^([0-2][0-9]||3[0-1]).(0[0-9]||1[0-2]).([0-9][0-9])?[0-9][0-9]$")) {
             return true;
@@ -119,10 +149,15 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         return false;
     }
 
-    public String attendEvent(String[] command, long chatId) {
+   /** Method reads and validates command from array of strings, then saves new attendee to database.
+    * 
+    * @param command    Array of strings 
+    * @return String about the status of saving.
+    */
+    public String attendEvent(String[] command) {
         if (command.length == 3) {
             try {
-                Event eventToAttend = db.getOneEventByNameAndChatId(command[1], chatId);
+                Event eventToAttend = db.getOneEventByNameAndChatId(command[1], lastChatId);
                 if (db.isAttendingEvent(command[2], eventToAttend)) {
                     return command[2] + " is already attending " + eventToAttend.getName();
                 }
@@ -136,10 +171,16 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         return "Can't attend event. Command must be in format \"/attend <eventname> <username>\"";
     }
 
-    public String getEvents(String[] command, long chatId) {
+   /** Method reads and validates command and calls DAO for all the events for a chat ID and formats possible
+    *  data to human readable format.
+    * 
+    * @param command    Array of strings
+    * @return String list of events for chat ID
+    */
+    public String getEvents(String[] command) {
         if (command.length == 1) {
             try {
-                List<Event> events = db.getAllEvents();
+                List<Event> events = db.getAllEvents(lastChatId);
                 String message = "";
                 for (Event event : events) {
                     message += event.toString() + "\n";
@@ -157,10 +198,15 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         return "Can't get events. Command must only contain text \"events\".";
     }
 
-    public String getEventAttendees(String[] command, long chatId) {
+   /** Method reads and validates command and calls DAO to get all the attendees for certain event.
+    * 
+    * @param command    Array of strings which contains command in correct format.
+    * @return String list of event attendees.
+    */
+    public String getEventAttendees(String[] command) {
         if (command.length == 2) {
             try {
-                Event event = db.getOneEventByNameAndChatId(command[1], chatId);
+                Event event = db.getOneEventByNameAndChatId(command[1], lastChatId);
 
                 if (event == null) {
                     return "Event doesn't exists.";
@@ -182,6 +228,10 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         return "Can't get attendees. Command must be in format \"/attending <eventname>\".";
     }
 
+   /** Method return all bots possible commands as a list.
+    * 
+    * @return String list of commands.
+    */
     public String getCommands() {
         return "/addevent\n"
                 + "/attend\n"
