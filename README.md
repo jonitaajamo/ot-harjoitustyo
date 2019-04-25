@@ -18,19 +18,19 @@
 
 #### Testaus
 
-Testit suoritetaan komennolla
+Testit voidaan suorittaa komennolla:
 
 ```
 mvn test
 ```
 
-Testikattavuusraportti luodaan komennolla
+Testikattavuusraportti voidaan luoda komennolla:
 
 ```
 mvn jacoco:report
 ```
 
-Kattavuusraporttia voi tarkastella avaamalla selaimella tiedosto _target/site/jacoco/index.html_
+Genereoitua raporttia voidaan tarkastella avaamalla tiedoston _target/site/jacoco/index.html_ selaimessa.
 
 #### Suoritettavan jarin generointi
 
@@ -40,7 +40,7 @@ Komento
 mvn package
 ```
 
-generoi hakemistoon _target_ suoritettavan jar-tiedoston _TelegramEventBot-1.0-SNAPSHOT-shaded.jar_
+luo hakemistoon _target_ suoritettavan jar-tiedoston _TelegramEventBot-1.0-SNAPSHOT-shaded.jar_
 
 #### Checkstyle
 
@@ -50,7 +50,7 @@ Tiedostoon [checkstyle.xml](https://github.com/jonitaajamo/ot-harjoitustyo/blob/
  mvn jxr:jxr checkstyle:checkstyle
 ```
 
-Mahdolliset virheilmoitukset selviävät avaamalla selaimella tiedosto _target/site/checkstyle.html_
+Tyyleissä olevat virheet selviävät avaamalla selaimella tiedosto _target/site/checkstyle.html_
 
 #### JavaDoc
 
@@ -60,4 +60,4 @@ JavaDoc generoidaan komennolla
 mvn javadoc:javadoc
 ```
 
-JavaDocia voi tarkastella avaamalla selaimella tiedosto _target/site/apidocs/index.html_
+JavaDocia voidaan tarkastella avaamalla tiedosto _target/site/apidocs/index.html_ selaimessa
