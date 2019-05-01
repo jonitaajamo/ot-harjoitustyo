@@ -13,4 +13,5 @@
 |16.4.|5|Lisää tietokantatoiminnallisuuksia, tapahtumiin osallistuminen toimii|
 |21.4.|5|Lisätty loput suunnitelluista komennoista, refaktoroitu ja paranneltu koodia|
 |23.4.|3|Lisätty dokumentaatiota ja korjattu bugeja|
-|YHT|34||
+1.5.|2|Päivitetty testejä, javadocia jatkettu|
+|YHT|36||
