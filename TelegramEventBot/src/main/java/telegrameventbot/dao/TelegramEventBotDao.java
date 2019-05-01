@@ -8,7 +8,6 @@ package telegrameventbot.dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import telegrameventbot.domain.Event;
 
 /**
@@ -16,14 +15,19 @@ import telegrameventbot.domain.Event;
  * @author jonitaajamo
  */
 public class TelegramEventBotDao {
-
+   
     private String database;
-
+    
     public TelegramEventBotDao(String databaseName) throws SQLException {
         this.database = databaseName;
         initDatabase();
     }
-
+   /**
+    * Connects the application to a database for operations.
+    * 
+    * @return Returns new connection object
+    * @throws SQLException Throws exception incase transaction fails.
+    */
     private Connection connect() throws SQLException {
         Connection conn = null;
         try {
@@ -38,6 +42,10 @@ public class TelegramEventBotDao {
         return conn;
     }
 
+   /**
+    * 
+    * @throws SQLException 
+    */
     public void initDatabase() throws SQLException {
         Connection connection = connect();
         PreparedStatement createEventTable = connection.prepareStatement(
@@ -64,10 +72,6 @@ public class TelegramEventBotDao {
     }
 
     public boolean insertNewEvent(Event event) throws SQLException {
-        if (eventIsInDb(event)) {
-            return false;
-        }
-
         Connection connection = connect();
         PreparedStatement newEvent = connection.prepareStatement(
                 "INSERT INTO Event(\n"
@@ -92,7 +96,7 @@ public class TelegramEventBotDao {
         Connection connection = connect();
 
         PreparedStatement getEventsQuery = connection.prepareStatement("SELECT * FROM Event WHERE chatid = ?;");
-        
+
         getEventsQuery.setLong(1, chatid);
         ResultSet resultSet = getEventsQuery.executeQuery();
 
@@ -108,17 +112,8 @@ public class TelegramEventBotDao {
         return events;
     }
 
-    public boolean eventIsInDb(Event event) throws SQLException {
-        List<Event> eventsInDb = getAllEvents(event.getChatId());
-        for (Event e : eventsInDb) {
-            if (e.getName().toLowerCase().equals(event.getName().toLowerCase()) && e.getChatId() == event.getChatId()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public List<String> getEventAttendees(Event event) throws SQLException {
+        System.out.println(event.toString() + " " + event.getChatId());
         ArrayList<String> attendees = new ArrayList<>();
 
         Connection connection = connect();
@@ -127,9 +122,10 @@ public class TelegramEventBotDao {
                 "SELECT Registration.name FROM Registration"
                 + " LEFT JOIN Event"
                 + " ON Registration.event_id = Event.id"
-                + " WHERE Event.id = ?");
+                + " WHERE Event.name = ? AND Event.chatId = ?");
 
-        getRegistrationsQuery.setInt(1, event.getId());
+        getRegistrationsQuery.setString(1, event.getName());
+        getRegistrationsQuery.setLong(2, event.getChatId());
 
         ResultSet resultSet = getRegistrationsQuery.executeQuery();
 
@@ -163,19 +159,7 @@ public class TelegramEventBotDao {
         return event;
     }
 
-    public boolean isAttendingEvent(String name, Event event) throws SQLException {
-        List<String> attendees = getEventAttendees(event);
-        if (attendees.contains(name.toLowerCase())) {
-            return true;
-        }
-        return false;
-    }
-
     public boolean attendEvent(String name, Event event) throws SQLException {
-        if (isAttendingEvent(name, event) || !eventIsInDb(event)) {
-            return false;
-        }
-
         Connection connection = connect();
         PreparedStatement attendEventQuery = connection.prepareStatement("INSERT INTO Registration"
                 + "(event_id, name) VALUES "

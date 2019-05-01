@@ -6,7 +6,6 @@
 package telegrameventbot.domain;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,14 +32,14 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         this.userName = username;
         this.db = new TelegramEventBotDao("event.db");
     }
-    
-   /**
-    * Method reads update from Telegram API and takes Update object as parameter, 
-    * not to be called manually.
-    * 
-    * @param    update  Update received from Telegram API
-    * 
-    */
+
+    /**
+     * Method reads update from Telegram API and takes Update object as
+     * parameter, not to be called manually.
+     *
+     * @param update Update received from Telegram API
+     *
+     */
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
@@ -61,13 +60,12 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         return apiKey;
     }
 
-   /** 
-    * Method sends messages to Telegram api.
-    * 
-    * @param text   Text for message to be sent.
-    * @return Message object which will be sent. 
-    */
-    
+    /**
+     * Method sends messages to Telegram api.
+     *
+     * @param text Text for message to be sent.
+     * @return Message object which will be sent.
+     */
     public Message sendMessage(String text) {
         SendMessage message = new SendMessage()
                 .setChatId(lastChatId)
@@ -79,12 +77,13 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         }
         return null;
     }
-    
-   /** Reads first word from Message objects message string.
-    * 
-    * @param message    Message object which will be parsed by the method.
-    * @return Answer String
-    */
+
+    /**
+     * Reads first word from Message objects message string.
+     *
+     * @param message Message object which will be parsed by the method.
+     * @return Answer String
+     */
     public String readCommand(Message message) {
         String[] command = message.getText().split(" ");
         String answer = "There's something wrong with your command. Check for typos.";
@@ -115,15 +114,21 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         return answer;
     }
 
-   /**Method reads and validates commands and calls DAO to save new event to database
-    * 
-    * @param command    Command array
-    * @return String about the status of saving the event.
-    */
+    /**
+     * Method reads and validates commands and calls DAO to save new event to
+     * database
+     *
+     * @param command Command array
+     * @return String about the status of saving the event.
+     */
     public String addEvent(String[] command) {
         if (command.length == 3 && checkDateFormat(command[2])) {
             Event newEvent = new Event(lastChatId, command[1], command[2]);
+            
             try {
+                if (eventIsInDb(newEvent)) {
+                    return "Event is already in db";
+                }
                 boolean addedSuccesfully = db.insertNewEvent(newEvent);
                 if (!addedSuccesfully) {
                     return "Event with the name " + newEvent.getName() + " is already added, try a different one.";
@@ -136,12 +141,13 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         }
         return "Can't add event. Command must be in format \"/addevent <name> <dd.mm.yyyy>\"";
     }
-    
-   /** Checks if date is in format dd.mm.yyyy when saved as string.
-    * 
-    * @param date   Date as string 
-    * @return boolean
-    */
+
+    /**
+     * Checks if date is in format dd.mm.yyyy when saved as string.
+     *
+     * @param date Date as string
+     * @return boolean
+     */
     public boolean checkDateFormat(String date) {
         if (date.matches("^([0-2][0-9]||3[0-1]).(0[0-9]||1[0-2]).([0-9][0-9])?[0-9][0-9]$")) {
             return true;
@@ -149,16 +155,24 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         return false;
     }
 
-   /** Method reads and validates command from array of strings, then saves new attendee to database.
-    * 
-    * @param command    Array of strings 
-    * @return String about the status of saving.
-    */
+    /**
+     * Method reads and validates command from array of strings, then saves new
+     * attendee to database.
+     *
+     * @param command Array of strings
+     * @return String about the status of saving.
+     */
     public String attendEvent(String[] command) {
         if (command.length == 3) {
             try {
                 Event eventToAttend = db.getOneEventByNameAndChatId(command[1], lastChatId);
-                if (db.isAttendingEvent(command[2], eventToAttend)) {
+                if (isAttendingEvent(command[2], eventToAttend)) {
+                    return "Already attending this event.";
+                }
+                if(!eventIsInDb(eventToAttend)) {
+                    return "Event doesn't exists.";
+                }
+                if (isAttendingEvent(command[2], eventToAttend)) {
                     return command[2] + " is already attending " + eventToAttend.getName();
                 }
                 if (db.attendEvent(command[2], eventToAttend)) {
@@ -171,12 +185,13 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         return "Can't attend event. Command must be in format \"/attend <eventname> <username>\"";
     }
 
-   /** Method reads and validates command and calls DAO for all the events for a chat ID and formats possible
-    *  data to human readable format.
-    * 
-    * @param command    Array of strings
-    * @return String list of events for chat ID
-    */
+    /**
+     * Method reads and validates command and calls DAO for all the events for a
+     * chat ID and formats possible data to human readable format.
+     *
+     * @param command Array of strings
+     * @return String list of events for chat ID
+     */
     public String getEvents(String[] command) {
         if (command.length == 1) {
             try {
@@ -198,11 +213,13 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         return "Can't get events. Command must only contain text \"events\".";
     }
 
-   /** Method reads and validates command and calls DAO to get all the attendees for certain event.
-    * 
-    * @param command    Array of strings which contains command in correct format.
-    * @return String list of event attendees.
-    */
+    /**
+     * Method reads and validates command and calls DAO to get all the attendees
+     * for certain event.
+     *
+     * @param command Array of strings which contains command in correct format.
+     * @return String list of event attendees.
+     */
     public String getEventAttendees(String[] command) {
         if (command.length == 2) {
             try {
@@ -228,14 +245,48 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         return "Can't get attendees. Command must be in format \"/attending <eventname>\".";
     }
 
-   /** Method return all bots possible commands as a list.
-    * 
-    * @return String list of commands.
-    */
+    /**
+     * Method return all bots possible commands as a list.
+     *
+     * @return String list of commands.
+     */
     public String getCommands() {
-        return "/addevent\n"
-                + "/attend\n"
+        return "/addevent <name> <dd.mm.yyyy>\n"
+                + "/attend <eventname> <username>\n"
                 + "/events\n"
-                + "/attending";
+                + "/attending <eventname>";
+    }
+    
+   /**
+    * Checks if event is already added to database
+    * 
+    * @param event Event that is checked
+    * @return boolean
+    * @throws SQLException 
+    */
+    public boolean eventIsInDb(Event event) throws SQLException {
+        List<Event> eventsInDb = db.getAllEvents(event.getChatId());
+        for (Event e : eventsInDb) {
+            if (e.getName().toLowerCase().equals(event.getName().toLowerCase()) && e.getChatId() == event.getChatId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+   /**
+    * Checks if name given as parameter is attending event
+    * 
+    * @param name Name that is checked
+    * @param event Event that the name is checked against
+    * @return boolean
+    * @throws SQLException 
+    */
+    public boolean isAttendingEvent(String name, Event event) throws SQLException {
+        List<String> attendees = db.getEventAttendees(event);
+        if (attendees.contains(name.toLowerCase())) {
+            return true;
+        }
+        return false;
     }
 }
