@@ -7,28 +7,32 @@
 * [vaatimusmäärittely](https://github.com/jonitaajamo/ot-harjoitustyo/blob/master/dokumentaatio/vaatimusmaarittely.md)
 * [arkkitehtuuri](https://github.com/jonitaajamo/ot-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md)
 * [työaikakirjanpito](https://github.com/jonitaajamo/ot-harjoitustyo/blob/master/dokumentaatio/tyoaikakirjanpito.md)
-* [release viikko5](https://github.com/jonitaajamo/ot-harjoitustyo/releases/tag/viikko5)
-*[käyttöohjeet](https://github.com/jonitaajamo/ot-harjoitustyo/blob/master/dokumentaatio/kayttoohjetet.md)
+* [käyttöohjeet](https://github.com/jonitaajamo/ot-harjoitustyo/blob/master/dokumentaatio/kayttoohjetet.md)
+
+### Releaset
+
+* [release viikko 5](https://github.com/jonitaajamo/ot-harjoitustyo/releases/tag/viikko5)
+* [release viikko 6](https://github.com/jonitaajamo/ot-harjoitustyo/releases/tag/viikko6)
 
 ## Komentorivitoiminnot
 
-### Testaus
+#### Testaus
 
-Testit suoritetaan komennolla
+Testit voidaan suorittaa komennolla:
 
 ```
 mvn test
 ```
 
-Testikattavuusraportti luodaan komennolla
+Testikattavuusraportti voidaan luoda komennolla:
 
 ```
 mvn jacoco:report
 ```
 
-Kattavuusraporttia voi tarkastella avaamalla selaimella tiedosto _target/site/jacoco/index.html_
+Genereoitua raporttia voidaan tarkastella avaamalla tiedoston _target/site/jacoco/index.html_ selaimessa.
 
-### Suoritettavan jarin generointi
+#### Suoritettavan jarin generointi
 
 Komento
 
@@ -36,9 +40,9 @@ Komento
 mvn package
 ```
 
-generoi hakemistoon _target_ suoritettavan jar-tiedoston _TelegramEventBot-1.0-SNAPSHOT-shaded.jar_
+luo hakemistoon _target_ suoritettavan jar-tiedoston _TelegramEventBot-1.0-SNAPSHOT-shaded.jar_
 
-### Checkstyle
+#### Checkstyle
 
 Tiedostoon [checkstyle.xml](https://github.com/jonitaajamo/ot-harjoitustyo/blob/master/TelegramEventBot/checkstyle.xml) määrittelemät tarkistukset suoritetaan komennolla
 
@@ -46,4 +50,14 @@ Tiedostoon [checkstyle.xml](https://github.com/jonitaajamo/ot-harjoitustyo/blob/
  mvn jxr:jxr checkstyle:checkstyle
 ```
 
-Mahdolliset virheilmoitukset selviävät avaamalla selaimella tiedosto _target/site/checkstyle.html_
+Tyyleissä olevat virheet selviävät avaamalla selaimella tiedosto _target/site/checkstyle.html_
+
+#### JavaDoc
+
+JavaDoc generoidaan komennolla
+
+```
+mvn javadoc:javadoc
+```
+
+JavaDocia voidaan tarkastella avaamalla tiedosto _target/site/apidocs/index.html_ selaimessa

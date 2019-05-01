@@ -11,4 +11,6 @@
 |9.4.|1|Pakkauskaavio|
 |15.4.|4|Tietokannan käyttöönotto, tapahtuman lisäys toimii|
 |16.4.|5|Lisää tietokantatoiminnallisuuksia, tapahtumiin osallistuminen toimii|
-|YHT|26||
+|21.4.|5|Lisätty loput suunnitelluista komennoista, refaktoroitu ja paranneltu koodia|
+|23.4.|3|Lisätty dokumentaatiota ja korjattu bugeja|
+|YHT|34||
