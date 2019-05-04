@@ -27,13 +27,16 @@ Testauksessa sovelluksen juurihakemistossa on ollut käyttöohjeiden mukainen co
 
 ### Toiminnallisuudet
 Määrittelydokumentin toiminaallisuuksia on ajettu Telegramissa manuaalisesti.
-Alla muutamia esimerkkejä.
+Muutamia esimerkkejä:
 
 #### Tapahtuman lisäys
+![tapahtuman lisäys](https://github.com/jonitaajamo/ot-harjoitustyo/raw/master/dokumentaatio/kuvat/addevent.png)
 
 #### Tapahtumien listaus
+![tapahtumien listaus](https://github.com/jonitaajamo/ot-harjoitustyo/raw/master/dokumentaatio/kuvat/events.png)
 
 #### Tapahtumaan ilmoittautuminen
+![tapahtumaan ilmoittautuminen](https://github.com/jonitaajamo/ot-harjoitustyo/raw/master/dokumentaatio/kuvat/attend.png)
 
 # Sovelluksen laatuongelmat
 Sovellus voisi antaa spesifpiä virheilmoituksia ja syötteen puuttuessa kysyä sitä jälkikäteen.
