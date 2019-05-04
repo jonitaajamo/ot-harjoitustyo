@@ -18,3 +18,4 @@ Sovellus on toteutettu Helsingin Yliopiston tietojenkäsittelytieteen kandiohjel
 
 * [release viikko 5](https://github.com/jonitaajamo/ot-harjoitustyo/releases/tag/viikko5)
 * [release viikko 6](https://github.com/jonitaajamo/ot-harjoitustyo/releases/tag/viikko6)
+* [final release](https://github.com/jonitaajamo/ot-harjoitustyo/releases/tag/final)
