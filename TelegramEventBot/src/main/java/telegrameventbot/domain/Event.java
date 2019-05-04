@@ -5,13 +5,15 @@
  */
 package telegrameventbot.domain;
 
+import java.util.Objects;
+
 /**
  *
  * @author jonitaajamo
  */
 public class Event {
 
-    public int id;
+    private int id;
     private long chatId;
     private String name;
     private String date;
@@ -65,5 +67,15 @@ public class Event {
     public String toString() {
         return this.name + ": " + this.date;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 67 * hash + (int) (this.chatId ^ (this.chatId >>> 32));
+        hash = 67 * hash + Objects.hashCode(this.name);
+        hash = 67 * hash + Objects.hashCode(this.date);
+        return hash;
+    }
+
 
 }

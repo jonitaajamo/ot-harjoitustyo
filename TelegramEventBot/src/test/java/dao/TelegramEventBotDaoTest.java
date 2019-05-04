@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package telegrameventbot.domain;
+package dao;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -17,6 +17,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import telegrameventbot.dao.TelegramEventBotDao;
+import telegrameventbot.domain.Event;
 import telegrameventbot.domain.Event;
 
 /**

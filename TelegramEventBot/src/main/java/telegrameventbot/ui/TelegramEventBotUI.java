@@ -8,6 +8,7 @@ package telegrameventbot.ui;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.Properties;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -24,16 +25,20 @@ import telegrameventbot.domain.TelegramEventBot;
  * @author jonitaajamo
  */
 public class TelegramEventBotUI extends Application {
-
+    String apiKey;
+    String username;
+    
     public static void main(String[] args) {
         launch(args);
     }
-
+  /**
+   * Calls all the required services to launch the bot.
+   * 
+   * @param stage 
+   * @throws Exception If launching the ui fails.
+   */
     @Override
     public void start(Stage stage) throws Exception {
-        String apiKey = "";
-        String username = "";
-
         try (InputStream input = new FileInputStream("config.properties")) {
 
             Properties prop = new Properties();
@@ -46,6 +51,21 @@ public class TelegramEventBotUI extends Application {
             ex.printStackTrace();
         }
 
+        connectToTelegramApi();
+
+        stage.setTitle("Telegram Event Bot");
+        Scene scene = new Scene(uiElements(), 200, 100);
+        stage.setScene(scene);
+        stage.show();
+
+    }
+    
+   /**
+    * Connects to telegram api.
+    * 
+    * @throws SQLException throws sql exception if db creation fails
+    */
+    public void connectToTelegramApi() throws SQLException {
         ApiContextInitializer.init();
 
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
@@ -55,10 +75,20 @@ public class TelegramEventBotUI extends Application {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-
-        stage.setTitle("Telegram Event Bot");
-
-        Label botStatus = new Label("Bot status: online");
+    }
+    
+   /**
+    * Builds ui with javafx.
+    * 
+    * @return GridPane including wanted elements.
+    */
+    public GridPane uiElements() {
+        Label botStatus = null;
+        if (apiKey.equals(null) || username.equals(null)) {
+            botStatus = new Label("Token or username missing, add config.properties file.");
+        } else {
+            botStatus = new Label("Bot status: online");
+        }
         GridPane.setConstraints(botStatus, 0, 1);
         Label usernameText = new Label("Username: " + username);
         GridPane.setConstraints(usernameText, 0, 2);
@@ -67,10 +97,7 @@ public class TelegramEventBotUI extends Application {
 
         GridPane components = new GridPane();
         components.getChildren().addAll(botStatus, usernameText, apiKeyText);
-
-        Scene scene = new Scene(components, 200, 100);
-        stage.setScene(scene);
-        stage.show();
-
+        
+        return components;
     }
 }

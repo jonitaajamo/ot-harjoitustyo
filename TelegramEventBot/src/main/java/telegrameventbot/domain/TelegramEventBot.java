@@ -166,10 +166,11 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         if (command.length == 3) {
             try {
                 Event eventToAttend = db.getOneEventByNameAndChatId(command[1], lastChatId);
+                
                 if (isAttendingEvent(command[2], eventToAttend)) {
                     return "Already attending this event.";
                 }
-                if(!eventIsInDb(eventToAttend)) {
+                if (!eventIsInDb(eventToAttend)) {
                     return "Event doesn't exists.";
                 }
                 if (isAttendingEvent(command[2], eventToAttend)) {
@@ -184,7 +185,7 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         }
         return "Can't attend event. Command must be in format \"/attend <eventname> <username>\"";
     }
-
+   
     /**
      * Method reads and validates command and calls DAO for all the events for a
      * chat ID and formats possible data to human readable format.
@@ -233,7 +234,7 @@ public class TelegramEventBot extends TelegramLongPollingBot {
                 for (String attendee : attendees) {
                     message += attendee + "\n";
                 }
-                if (message.length() > 0) {
+                if (message.length() > 1) {
                     message += "are attending " + event.getName() + " on " + event.getDate();
                     return message;
                 }
@@ -273,7 +274,7 @@ public class TelegramEventBot extends TelegramLongPollingBot {
         }
         return false;
     }
-
+//
    /**
     * Checks if name given as parameter is attending event
     * 

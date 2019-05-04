@@ -43,8 +43,9 @@ public class TelegramEventBotDao {
     }
 
    /**
+    * Creates database tables if not initialized before
     * 
-    * @throws SQLException 
+    * @throws SQLException exception incase of transaction failure
     */
     public void initDatabase() throws SQLException {
         Connection connection = connect();
@@ -55,9 +56,10 @@ public class TelegramEventBotDao {
                 + " name varchar(50) NOT NULL, \n"
                 + " date Date NOT NULL);"
         );
+        
         createEventTable.execute();
         createEventTable.close();
-
+        
         PreparedStatement createRegistrationTable = connection.prepareStatement(
                 "CREATE TABLE IF NOT EXISTS Registration (\n"
                 + " id integer PRIMARY KEY,\n"
@@ -65,12 +67,20 @@ public class TelegramEventBotDao {
                 + " name varchar(50) NOT NULL,\n"
                 + " FOREIGN KEY(event_id) REFERENCES Event(id));"
         );
+        
         createRegistrationTable.execute();
         createRegistrationTable.close();
-
+        
         connection.close();
     }
-
+    
+   /**
+    * Adds new event to database.
+    * 
+    * @param event Event to add to the database
+    * @return boolean
+    * @throws SQLException exception incase of transaction failure
+    */
     public boolean insertNewEvent(Event event) throws SQLException {
         Connection connection = connect();
         PreparedStatement newEvent = connection.prepareStatement(
@@ -90,6 +100,13 @@ public class TelegramEventBotDao {
         return true;
     }
 
+   /**
+    * Gets all events for one chat.
+    * 
+    * @param chatid Chat id to get events for
+    * @return List of all events
+    * @throws SQLException 
+    */
     public List<Event> getAllEvents(long chatid) throws SQLException {
         List<Event> events = new ArrayList<>();
 
@@ -112,8 +129,14 @@ public class TelegramEventBotDao {
         return events;
     }
 
+   /**
+    * Gets event attendees for event given as parameter.
+    * 
+    * @param event Event to get attendees for.
+    * @return List including the attendees
+    * @throws SQLException exception incase of transaction failure
+    */
     public List<String> getEventAttendees(Event event) throws SQLException {
-        System.out.println(event.toString() + " " + event.getChatId());
         ArrayList<String> attendees = new ArrayList<>();
 
         Connection connection = connect();
@@ -140,6 +163,14 @@ public class TelegramEventBotDao {
         return attendees;
     }
 
+   /**
+    * Gets one event by its name
+    * 
+    * @param name Name string to search event for.
+    * @param chatId Chat id to search for.
+    * @return Event
+    * @throws SQLException exception incase of transaction failure
+    */
     public Event getOneEventByNameAndChatId(String name, long chatId) throws SQLException {
         Connection connection = connect();
 
@@ -159,6 +190,14 @@ public class TelegramEventBotDao {
         return event;
     }
 
+   /**
+    * Attend an event in database.
+    * 
+    * @param name Name of the attendee
+    * @param event Event to attend to
+    * @return boolean value to indicate success of the operation
+    * @throws SQLException exception incase of transaction failure
+    */
     public boolean attendEvent(String name, Event event) throws SQLException {
         Connection connection = connect();
         PreparedStatement attendEventQuery = connection.prepareStatement("INSERT INTO Registration"
