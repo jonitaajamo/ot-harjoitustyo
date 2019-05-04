@@ -8,6 +8,7 @@
 * [arkkitehtuuri](https://github.com/jonitaajamo/ot-harjoitustyo/blob/master/dokumentaatio/arkkitehtuuri.md)
 * [työaikakirjanpito](https://github.com/jonitaajamo/ot-harjoitustyo/blob/master/dokumentaatio/tyoaikakirjanpito.md)
 * [käyttöohjeet](https://github.com/jonitaajamo/ot-harjoitustyo/blob/master/dokumentaatio/kayttoohjeet.md)
+* [testausdokumentti](https://github.com/jonitaajamo/ot-harjoitustyo/blob/master/dokumentaatio/testausdokumentti.md)
 
 ### Releaset
 
