@@ -12,9 +12,12 @@
 
 * Testaamista varten tulee rekisteröidä uusi botti Telegramin bot APIin lähettämällä BotFatherille viestin `/newbot` osoitteessa https://telegram.me/botfather ja vastaamalla kysymyksiin
 * Kun botti on luotu, saat BotFatherilta tokenin ja valitsemasi käyttäjänimen
-* Luo ohjelman suoritushakemistoon (samaan hakemistoon kuin .jar tiedosto) tiedosto config.properties, joka on muotoa 
-´apiKey=<apiKey telegramin bot fatherilta>´
-´username=<botin käyttäjänimi bot fatherilta>´
+* Luo ohjelman suoritushakemistoon (samaan hakemistoon kuin .jar tiedosto) tiedosto config.properties, joka on muotoa: 
+
+
+apiKey=[apiKey telegramin bot fatherilta]
+
+username=[botin käyttäjänimi bot fatherilta]
 
 ## Ohjelman käynnistäminen
 
@@ -27,8 +30,11 @@
 
 ### Tapahtuman luonti
 
-Tapahtuman luonti tapahtuu lähettämällä Telegramissa viestin ´/addevent <nimi> <dd.mm.yyyy>`. Luonnin onnistuessa botti vastaa onnistumisviestillä.
+Tapahtuman luonti tapahtuu lähettämällä Telegramissa viestin /addevent [nimi] [dd.mm.yyyy]. Luonnin onnistuessa botti vastaa onnistumisviestillä.
 
 ### Tapahtumaan ilmoittautuminen
 
-Tapahtumaan ilmoittaudutaan lähettämällä viesti /attend <tapahtuman nimi> <käyttäjänimi>
+Tapahtumaan ilmoittaudutaan lähettämällä viesti /attend [tapahtuman nimi] [käyttäjänimi]
+
+### Komentojen listaus
+Kaikki mahdolliset komennot saat botilta komennolla /commands
